@@ -1,0 +1,717 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Quittances Résidence Manon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#F2F2F6; --surface:#FFFFFF; --ink:#1D2030; --muted:#5E6278; --line:#D8D9E4;
+  --accent:#3E4180; --accent-soft:#E8E9F4; --on-accent:#FFFFFF; --ok:#2E6B4F;
+  --paper:#FFFFFF; --paper-ink:#1D2030; --paper-muted:#6A6D80; --paper-line:#C9CADB; --paper-accent:#3E4180; --paper-fill:#EEEFF7;
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#14151C; --surface:#1D1F29; --ink:#E6E7F0; --muted:#A3A6BC; --line:#343747;
+    --accent:#A9ACEB; --accent-soft:#2A2C44; --on-accent:#14151C; --ok:#7FC8A2;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14151C; --surface:#1D1F29; --ink:#E6E7F0; --muted:#A3A6BC; --line:#343747;
+  --accent:#A9ACEB; --accent-soft:#2A2C44; --on-accent:#14151C; --ok:#7FC8A2;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:grid;gap:24px;grid-template-columns:minmax(0,380px) minmax(0,1fr);align-items:start}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}}
+header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px}
+h1{font-size:1.45rem;font-weight:700;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:0;font-size:.92rem}
+.panel{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.label{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.month-row{display:flex;gap:8px;align-items:stretch}
+.month-row select{flex:1;min-width:0}
+.icon-btn{width:44px;flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;font-size:1.1rem;cursor:pointer}
+.icon-btn:hover{background:var(--accent-soft)}
+select,input,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:64px;line-height:1.4}
+select.big{font-size:1rem;font-weight:600;padding-inline:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.field{display:flex;flex-direction:column;gap:4px}
+.field span{font-size:.85rem;color:var(--muted)}
+.grid2>*{min-width:0}
+input[type="date"]{-webkit-appearance:none;appearance:none;display:block;min-width:0;min-height:46px;text-align:left}
+input[type="date"]::-webkit-date-and-time-value{text-align:left}
+.actionbar{display:flex;flex-direction:column;gap:10px}
+.status:empty{display:none}
+.status{padding:8px 10px;border-radius:8px;background:var(--accent-soft);color:var(--ink)}
+.status.ok{background:transparent;padding:0}
+.status.err{background:#FBE9E7;color:#8A2A1B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .status.err{background:#3A201C;color:#F4B4A8}}
+:root[data-theme="dark"] .status.err{background:#3A201C;color:#F4B4A8}
+@media (max-width:860px){
+  body{font-size:16px}
+  .wrap{padding-block:16px 190px}
+  .preview{position:static}
+  .actionbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px));box-shadow:0 -6px 20px rgba(20,22,40,.10)}
+  .actionbar .amounts{border-top:0;padding-top:0}
+}
+@media (max-width:520px){ .grid2{grid-template-columns:1fr} }
+.overlay{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.overlay-in{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:calc(16px + env(safe-area-inset-top, 0px)) calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:14px}
+.overlay-head{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:1.1rem}
+.steps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.qimg{width:100%;height:auto;border-radius:4px;box-shadow:0 1px 2px rgba(20,22,40,.12),0 8px 28px rgba(20,22,40,.14);-webkit-touch-callout:default;user-select:auto;background:#fff}
+.check{display:flex;gap:10px;align-items:center;font-size:.95rem}
+.check input{width:20px;height:20px;accent-color:var(--accent)}
+.primary{border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:700;font-size:1.05rem;padding:14px 16px;cursor:pointer}
+.primary:disabled{opacity:.55;cursor:default}
+.secondary{border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem;padding:8px 12px;cursor:pointer}
+.secondary:hover{background:var(--accent-soft)}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.status{font-size:.9rem;margin:0}
+.status.ok{color:var(--ok)}
+.hint{font-size:.85rem;color:var(--muted);margin:0}
+.amounts{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:10px}
+.amounts b{font-family:var(--mono);font-size:1.15rem;font-variant-numeric:tabular-nums}
+details.card summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details.card summary::after{content:"+";color:var(--muted)}
+details.card[open] summary::after{content:"−"}
+details.card[open] summary{margin-bottom:4px}
+.sigpad{width:100%;height:clamp(200px, 32vh, 280px);border:1px dashed var(--line);border-radius:8px;background:#fff;touch-action:none;cursor:crosshair;display:block}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sig-saved{max-height:110px;max-width:100%;background:#fff;border-radius:6px;padding:4px;border:1px solid var(--line)}
+
+/* ---- Aperçu : feuille A4 à l'échelle ---- */
+.preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+.preview-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.sheet{container-type:inline-size;width:100%;aspect-ratio:210/297;max-width:100%;background:var(--paper);color:var(--paper-ink);border-radius:4px;box-shadow:0 1px 2px rgba(20,22,40,.12),0 8px 28px rgba(20,22,40,.14);overflow:hidden;font-family:Helvetica,Arial,sans-serif}
+.pg{--mm:calc(100cqw / 210);--pt:calc(var(--mm) * .3528);padding:calc(16*var(--mm)) calc(18*var(--mm));display:flex;flex-direction:column;gap:calc(5*var(--mm));height:100%;line-height:1.3}
+.p-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:calc(.6*var(--mm)) solid var(--paper-accent);padding-bottom:calc(3*var(--mm))}
+.p-title{font-size:calc(20*var(--pt));font-weight:700;color:var(--paper-accent);letter-spacing:.02em}
+.p-period{font-size:calc(11*var(--pt));margin-top:calc(1*var(--mm))}
+.p-ref{text-align:right;font-size:calc(9*var(--pt));color:var(--paper-muted)}
+.p-cols{display:grid;grid-template-columns:1fr 1fr;gap:calc(8*var(--mm))}
+.p-lab{font-size:calc(7.5*var(--pt));font-weight:700;letter-spacing:.12em;color:var(--paper-accent);margin-bottom:calc(1.2*var(--mm))}
+.p-name{font-size:calc(10.5*var(--pt));font-weight:700}
+.p-txt{font-size:calc(10*var(--pt))}
+.p-par{font-size:calc(10.5*var(--pt));line-height:1.45}
+.p-table{width:100%;border-collapse:collapse;font-size:calc(10*var(--pt))}
+.p-table th{background:var(--paper-fill);text-align:left;font-weight:700;padding:calc(1.8*var(--mm)) calc(3*var(--mm))}
+.p-table th:last-child,.p-table td:last-child{text-align:right}
+.p-table td{padding:calc(1.8*var(--mm)) calc(3*var(--mm));border-bottom:calc(.25*var(--mm)) solid var(--paper-line)}
+.p-table tr.tot td{font-weight:700;border-bottom:0;border-top:calc(.4*var(--mm)) solid var(--paper-ink)}
+.p-paid{font-size:calc(9.5*var(--pt));color:var(--paper-muted)}
+.p-small{font-size:calc(8*var(--pt));font-style:italic;color:var(--paper-muted);line-height:1.4}
+.p-sign{display:flex;justify-content:space-between;align-items:flex-start;font-size:calc(10*var(--pt))}
+.p-sigbox{text-align:right;min-width:calc(60*var(--mm))}
+.p-sigbox img{max-height:calc(22*var(--mm));max-width:calc(75*var(--mm));margin-top:calc(1*var(--mm))}
+.p-avis{margin-top:auto;border:calc(.3*var(--mm)) solid var(--paper-line);border-radius:calc(1.2*var(--mm));padding:calc(3*var(--mm)) calc(4*var(--mm));display:flex;flex-direction:column;gap:calc(1.4*var(--mm))}
+.p-avis-t{font-size:calc(10*var(--pt));font-weight:700;color:var(--paper-accent)}
+.p-avis-row{display:flex;justify-content:space-between;font-size:calc(9.5*var(--pt))}
+.p-avis-row.tot{font-weight:700;border-top:calc(.25*var(--mm)) solid var(--paper-line);padding-top:calc(1.2*var(--mm))}
+.p-foot{font-size:calc(7.5*var(--pt));color:var(--paper-muted);text-align:center}
+@media (prefers-reduced-motion:no-preference){.primary{transition:transform .08s}.primary:active{transform:scale(.99)}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Quittance de loyer</h1>
+    <p class="sub" id="subAff"></p>
+  </header>
+
+  <div class="panel">
+    <section class="card" aria-labelledby="lab-mois">
+      <span class="label" id="lab-mois">Premier mois de la quittance</span>
+      <div class="month-row">
+        <button class="icon-btn" id="prev" type="button" aria-label="Mois précédent">‹</button>
+        <select id="periode" class="big" aria-label="Premier mois"></select>
+        <button class="icon-btn" id="next" type="button" aria-label="Mois suivant">›</button>
+      </div>
+      <label class="field"><span>Nombre de mois sur cette quittance</span>
+        <select id="nbMois"></select>
+      </label>
+      <p class="hint" id="periodeAff"></p>
+      <div class="grid2">
+        <label class="field"><span>Loyer payé le</span><input type="date" id="datePaiement"></label>
+        <label class="field"><span>Moyen de paiement</span>
+          <select id="mode">
+            <option value="">Non précisé</option>
+            <option value="virement">Virement</option>
+            <option value="chèque">Chèque</option>
+            <option value="espèces">Espèces</option>
+            <option value="prélèvement">Prélèvement</option>
+          </select>
+        </label>
+      </div>
+      <label class="field"><span>Quittance faite le</span><input type="date" id="dateEmission"></label>
+      <label class="check"><input type="checkbox" id="avis" checked> Ajouter l'avis d'échéance de la période suivante</label>
+      <div class="actionbar">
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+        <div class="amounts"><span>Total payé</span><b id="totalAff">620,00 €</b></div>
+        <button class="primary" id="dl" type="button">Télécharger la quittance (PDF)</button>
+      </div>
+      <p class="hint">Le bouton prépare la quittance : en PDF quand l'appareil le permet, sinon en image à partager directement sur WhatsApp.</p>
+      <p class="hint">À établir seulement une fois le loyer et les charges payés en totalité.</p>
+    </section>
+
+    <section class="card" aria-labelledby="lab-sig">
+      <span class="label" id="lab-sig">Signature du bailleur (facultatif)</span>
+      <div id="sigView" class="row" hidden>
+        <img id="sigImg" class="sig-saved" alt="Signature enregistrée">
+        <button class="secondary" id="sigRemove" type="button">Supprimer</button>
+      </div>
+      <div id="sigEdit">
+        <canvas id="sigPad" class="sigpad" aria-label="Zone de signature : signer avec le doigt ou la souris"></canvas>
+        <div class="row" style="margin-top:8px">
+          <button class="secondary" id="sigClear" type="button">Effacer</button>
+          <button class="secondary" id="sigSave" type="button">Utiliser cette signature</button>
+        </div>
+      </div>
+      <p class="hint">Signer une fois ici : elle est gardée sur cet appareil et ajoutée à chaque quittance.</p>
+    </section>
+
+    <details class="card" id="bail">
+      <summary>Informations du bail</summary>
+      <p class="hint">À modifier seulement si quelque chose change (révision du loyer, nouveau locataire…). Les changements sont gardés sur cet appareil.</p>
+      <label class="field"><span>Bailleur</span><input id="f_bNom"></label>
+      <label class="field"><span>Adresse du bailleur (une ligne par ligne)</span><textarea id="f_bAdr" rows="2"></textarea></label>
+      <label class="field"><span>Locataires (un par ligne)</span><textarea id="f_loc" rows="2"></textarea></label>
+      <label class="field"><span>Logement</span><input id="f_logDesc"></label>
+      <label class="field"><span>Adresse du logement (une ligne par ligne)</span><textarea id="f_logAdr" rows="3"></textarea></label>
+      <div class="grid2">
+        <label class="field"><span>Loyer hors charges (€)</span><input id="f_loyer" type="number" step="0.01" min="0" inputmode="decimal"></label>
+        <label class="field"><span>Provision pour charges (€)</span><input id="f_charges" type="number" step="0.01" min="0" inputmode="decimal"></label>
+      </div>
+      <div class="grid2">
+        <label class="field"><span>Fait à (ville)</span><input id="f_ville"></label>
+        <label class="field"><span>Préfixe de référence</span><input id="f_ref"></label>
+      </div>
+      <div class="row"><button class="secondary" id="reset" type="button">Revenir aux informations d'origine</button></div>
+      <div id="linkBox" class="field" hidden>
+        <span>Lien personnel (contient ces informations, à envoyer à la personne qui fait les quittances)</span>
+        <div class="row"><button class="secondary" id="linkCopy" type="button">Copier le lien personnel</button></div>
+        <textarea id="linkOut" rows="3" readonly></textarea>
+      </div>
+    </details>
+  </div>
+
+  <section class="preview" aria-label="Aperçu de la quittance">
+    <div class="preview-head"><span class="label">Aperçu</span><span class="hint" id="fname"></span></div>
+    <div class="sheet"><div class="pg" id="pg"></div></div>
+  </section>
+</div>
+
+<div class="overlay" id="imgView" hidden role="dialog" aria-modal="true" aria-labelledby="imgTitle">
+  <div class="overlay-in">
+    <div class="overlay-head">
+      <strong id="imgTitle">Quittance prête à envoyer</strong>
+      <button class="secondary" id="imgClose" type="button">Fermer</button>
+    </div>
+    <ol class="steps">
+      <li><b>Appuyer longuement sur l'image</b>, puis choisir « Partager » (ou « Enregistrer l'image »).</li>
+      <li>Choisir <b>WhatsApp</b> et la locataire.</li>
+    </ol>
+    <div class="row"><button class="primary" id="imgCopy" type="button" style="flex:1">Copier l'image (à coller dans WhatsApp)</button></div>
+    <p class="status" id="imgStatus" role="status" aria-live="polite"></p>
+    <img id="imgOut" alt="Quittance de loyer" class="qimg">
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* =====================================================================
+   INFORMATIONS DU BAIL — modifier ici si quelque chose change durablement
+   ===================================================================== */
+const CONFIG = {
+  bailleurNom: "",
+  bailleurAdresse: [],
+  locataires: [],
+  logementDescription: "",
+  logementAdresse: [],
+  loyer: 0,
+  charges: 0,
+  villeEmission: "",
+  prefixeRef: "RESMA"
+};
+
+const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const KEY_BAIL = "quittance.bail.v1", KEY_SIG = "quittance.signature.v1";
+const $ = id => document.getElementById(id);
+
+function store(k, v){ try{ v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); }catch(e){} }
+function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+
+let bail = Object.assign({}, CONFIG);
+try{ const s = JSON.parse(load(KEY_BAIL) || "null"); if (s && typeof s === "object") Object.assign(bail, s); }catch(e){}
+let signature = load(KEY_SIG);
+const b64enc = str => btoa(unescape(encodeURIComponent(str))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const b64dec = str => decodeURIComponent(escape(atob(str.replace(/-/g, "+").replace(/_/g, "/"))));
+try {
+  const m = location.hash.match(/^#d=([A-Za-z0-9_-]+)$/);
+  if (m) {
+    const fromLink = JSON.parse(b64dec(m[1]));
+    if (fromLink && typeof fromLink === "object") { Object.assign(bail, fromLink); store(KEY_BAIL, JSON.stringify(fromLink)); }
+  }
+} catch (e) {}
+
+/* ---------- formats ---------- */
+const pad = n => String(n).padStart(2, "0");
+const fmtDate = d => `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function parseIso(s){ if(!s) return null; const [y,m,d] = s.split("-").map(Number); return y ? new Date(y, m-1, d) : null; }
+function euros(n){
+  const [e, c] = (Math.round(n*100)/100).toFixed(2).split(".");
+  return e.replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "," + c + " €";
+}
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+/* ---------- montant en lettres ---------- */
+const U = ["zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix","onze","douze","treize","quatorze","quinze","seize","dix-sept","dix-huit","dix-neuf"];
+const T = ["","","vingt","trente","quarante","cinquante","soixante"];
+function lt100(n){
+  if (n < 20) return U[n];
+  const t = Math.floor(n/10), u = n % 10;
+  if (t === 7) return u === 1 ? "soixante et onze" : "soixante-" + U[10+u];
+  if (t === 9) return "quatre-vingt-" + U[10+u];
+  if (t === 8) return u === 0 ? "quatre-vingts" : "quatre-vingt-" + U[u];
+  if (u === 0) return T[t];
+  return u === 1 ? T[t] + " et un" : T[t] + "-" + U[u];
+}
+function lt1000(n){
+  const h = Math.floor(n/100), r = n % 100;
+  let s = h === 0 ? "" : (h === 1 ? "cent" : U[h] + " cent" + (r === 0 ? "s" : ""));
+  if (r) s = (s ? s + " " : "") + lt100(r);
+  return s;
+}
+function enLettres(n){
+  if (n === 0) return "zéro";
+  const m = Math.floor(n/1000), r = n % 1000;
+  let s = "";
+  if (m) s = (m === 1 ? "mille" : lt1000(m).replace(/(vingt|cent)s$/, "$1") + " mille");
+  if (r) s = (s ? s + " " : "") + lt1000(r);
+  return s;
+}
+function montantLettres(x){
+  const cents = Math.round(x*100), e = Math.floor(cents/100), c = cents % 100;
+  let s = enLettres(e) + (e > 1 ? " euros" : " euro");
+  if (c) s += " et " + enLettres(c) + (c > 1 ? " centimes" : " centime");
+  return s;
+}
+
+/* ---------- période ---------- */
+const nbMois = () => Math.max(1, Math.min(12, +$("nbMois").value || 1));
+function nomPeriode(start, n){
+  const end = new Date(start.getFullYear(), start.getMonth() + n - 1, 1);
+  if (n === 1) return MOIS[start.getMonth()] + " " + start.getFullYear();
+  if (start.getFullYear() === end.getFullYear()) return MOIS[start.getMonth()] + " à " + MOIS[end.getMonth()] + " " + end.getFullYear();
+  return MOIS[start.getMonth()] + " " + start.getFullYear() + " à " + MOIS[end.getMonth()] + " " + end.getFullYear();
+}
+
+/* ---------- état ---------- */
+const today = new Date();
+let sel = { m: today.getMonth(), y: today.getFullYear() };
+
+function data(){
+  const n = nbMois();
+  const debut = new Date(sel.y, sel.m, 1), fin = new Date(sel.y, sel.m+n, 0);
+  const nDeb = new Date(sel.y, sel.m+n, 1), nFin = new Date(sel.y, sel.m+2*n, 0);
+  const loyerM = Number(bail.loyer) || 0, chargesM = Number(bail.charges) || 0;
+  const lignes = n === 1
+    ? [["Loyer hors charges", loyerM], ["Provision pour charges", chargesM]]
+    : [[`Loyer hors charges (${n} mois × ${euros(loyerM)})`, loyerM*n], [`Provision pour charges (${n} mois × ${euros(chargesM)})`, chargesM*n]];
+  const fm = debut.getMonth(), fy = debut.getFullYear(), lm = fin.getMonth(), ly = fin.getFullYear();
+  return {
+    n, debut, fin, nDeb, nFin, lignes, total: (loyerM + chargesM) * n,
+    moisNom: nomPeriode(debut, n),
+    moisSuivNom: nomPeriode(nDeb, n),
+    ref: n === 1 ? `${bail.prefixeRef} ${pad(fm+1)}/${fy}` : `${bail.prefixeRef} ${pad(fm+1)}/${fy}-${pad(lm+1)}/${ly}`,
+    paye: parseIso($("datePaiement").value),
+    mode: $("mode").value,
+    emission: parseIso($("dateEmission").value) || today,
+    avis: $("avis").checked
+  };
+}
+const locTxt = () => { const l = bail.locataires.filter(Boolean); return l.length > 1 ? l.slice(0,-1).join(", ") + " et " + l[l.length-1] : (l[0] || ""); };
+function attestation(d){
+  return `Je soussignée ${bail.bailleurNom}, propriétaire du logement désigné ci-dessus, déclare avoir reçu de ${locTxt()} la somme de ${euros(d.total)} (${montantLettres(d.total)}) au titre du paiement du loyer et des charges pour la période du ${fmtDate(d.debut)} au ${fmtDate(d.fin)}, et leur en donne quittance.`;
+}
+const CLAUSE = "Quittance donnée pour la période ci-dessus, sous réserve de tout complément dû selon les lois en vigueur et de toute poursuite en cours. La présente quittance annule tous les reçus remis à titre d'acompte et ne présume en aucun cas du paiement des termes précédents, ni d'une renonciation aux droits et actions du bailleur.";
+const payeTxt = d => d.paye ? `Payé le ${fmtDate(d.paye)}${d.mode ? " par " + d.mode : ""}.` : (d.mode ? `Payé par ${d.mode}.` : "");
+const fileName = d => {
+  const a = d.debut, b = d.fin;
+  const base = d.n === 1 ? `Quittance_${cap(MOIS[a.getMonth()])}_${a.getFullYear()}`
+    : a.getFullYear() === b.getFullYear() ? `Quittance_${cap(MOIS[a.getMonth()])}-${cap(MOIS[b.getMonth()])}_${b.getFullYear()}`
+    : `Quittance_${cap(MOIS[a.getMonth()])}_${a.getFullYear()}-${cap(MOIS[b.getMonth()])}_${b.getFullYear()}`;
+  return (base + ".pdf").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
+
+/* ---------- aperçu ---------- */
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function render(){
+  const d = data();
+  $("totalAff").textContent = euros(d.total);
+  $("fname").textContent = fileName(d);
+  $("periodeAff").textContent = `Période couverte : du ${fmtDate(d.debut)} au ${fmtDate(d.fin)}`;
+  const lines = a => a.filter(Boolean).map(esc).join("<br>");
+  $("pg").innerHTML = `
+    <div class="p-top">
+      <div><div class="p-title">QUITTANCE DE LOYER</div>
+      <div class="p-period">${esc(cap(d.moisNom))} · du ${fmtDate(d.debut)} au ${fmtDate(d.fin)}</div></div>
+      <div class="p-ref">Réf. ${esc(d.ref)}</div>
+    </div>
+    <div class="p-cols">
+      <div><div class="p-lab">BAILLEUR</div><div class="p-name">${esc(bail.bailleurNom)}</div><div class="p-txt">${lines(bail.bailleurAdresse)}</div></div>
+      <div><div class="p-lab">LOCATAIRES</div><div class="p-name">${lines(bail.locataires)}</div><div class="p-txt">${lines(bail.logementAdresse)}</div></div>
+    </div>
+    <div><div class="p-lab">LOGEMENT LOUÉ</div><div class="p-txt">${esc(bail.logementDescription)}<br>${esc(bail.logementAdresse.filter(Boolean).join(", "))}</div></div>
+    <div class="p-par">${esc(attestation(d))}</div>
+    <div>
+      <table class="p-table"><thead><tr><th>Détail des sommes versées</th><th>Montant</th></tr></thead><tbody>
+        ${d.lignes.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${euros(v)}</td></tr>`).join("")}
+        <tr class="tot"><td>Total payé</td><td>${euros(d.total)}</td></tr>
+      </tbody></table>
+      <div class="p-paid" style="margin-top:calc(1.5*var(--mm))">${esc(payeTxt(d))} Solde restant dû pour cette période : 0,00 €.</div>
+    </div>
+    <div class="p-small">${esc(CLAUSE)}</div>
+    <div class="p-sign">
+      <div>Fait à ${esc(bail.villeEmission)}, le ${fmtDate(d.emission)}</div>
+      <div class="p-sigbox">Signature du bailleur${signature ? `<br><img src="${signature}" alt="">` : ""}</div>
+    </div>
+    ${d.avis ? `<div class="p-avis">
+      <div class="p-avis-t">AVIS D'ÉCHÉANCE · ${esc(cap(d.moisSuivNom))} (du ${fmtDate(d.nDeb)} au ${fmtDate(d.nFin)})</div>
+      ${d.lignes.map(([k, v]) => `<div class="p-avis-row"><span>${esc(k)}</span><span>${euros(v)}</span></div>`).join("")}
+      <div class="p-avis-row tot"><span>Total à payer</span><span>${euros(d.total)}</span></div>
+      <div class="p-small">Cet avis ne peut en aucun cas servir de quittance de loyer ou de reçu.</div>
+    </div>` : `<div style="margin-top:auto"></div>`}
+    <div class="p-foot">Quittance établie en application de l'article 21 de la loi n° 89-462 du 6 juillet 1989.</div>`;
+}
+
+/* ---------- PDF ---------- */
+function drawQuittance(doc, d){
+  const L = 18, R = 192, W = R - L;
+  const ACC = [62,65,128], INK = [29,32,48], MUT = [106,109,128], LINE = [201,202,219], FILL = [238,239,247];
+  const col = c => doc.setTextColor(c[0], c[1], c[2]);
+  const font = (st, sz) => { doc.setFont("helvetica", st); doc.setFontSize(sz); };
+  const lh = sz => sz * 0.3528 * 1.35;
+  let y = 24;
+
+  // En-tête
+  font("bold", 20); col(ACC); doc.text("QUITTANCE DE LOYER", L, y);
+  font("normal", 9); col(MUT); doc.text("Réf. " + d.ref, R, y - 5, { align: "right" });
+  y += 7; font("normal", 11); col(INK);
+  doc.text(`${cap(d.moisNom)} · du ${fmtDate(d.debut)} au ${fmtDate(d.fin)}`, L, y);
+  y += 4; doc.setDrawColor(...ACC); doc.setLineWidth(0.6); doc.line(L, y, R, y);
+
+  // Bailleur / locataires
+  y += 9; const cx = L + W/2 + 4;
+  const block = (x, label, names, addr) => {
+    let yy = y; font("bold", 7.5); col(ACC); doc.text(label, x, yy, { charSpace: 0.35 });
+    yy += 5; font("bold", 10.5); col(INK);
+    names.filter(Boolean).forEach(n => { doc.text(n, x, yy); yy += lh(10.5); });
+    font("normal", 10);
+    addr.filter(Boolean).forEach(a => { doc.text(a, x, yy); yy += lh(10); });
+    return yy;
+  };
+  const y1 = block(L, "BAILLEUR", [bail.bailleurNom], bail.bailleurAdresse);
+  const y2 = block(cx, "LOCATAIRES", bail.locataires, bail.logementAdresse);
+  y = Math.max(y1, y2) + 5;
+
+  // Logement
+  font("bold", 7.5); col(ACC); doc.text("LOGEMENT LOUÉ", L, y, { charSpace: 0.35 });
+  y += 5; font("normal", 10); col(INK);
+  doc.splitTextToSize(bail.logementDescription + "\n" + bail.logementAdresse.filter(Boolean).join(", "), W)
+     .forEach(t => { doc.text(t, L, y); y += lh(10); });
+
+  // Attestation
+  y += 5; font("normal", 10.5);
+  doc.splitTextToSize(attestation(d), W).forEach(t => { doc.text(t, L, y); y += lh(10.5) * 1.07; });
+
+  // Tableau
+  y += 4; const rh = 7.5;
+  doc.setFillColor(...FILL); doc.rect(L, y, W, rh, "F");
+  font("bold", 10); col(INK);
+  doc.text("Détail des sommes versées", L + 3, y + 5); doc.text("Montant", R - 3, y + 5, { align: "right" });
+  y += rh; font("normal", 10);
+  d.lignes.forEach(([k, v]) => {
+    doc.text(k, L + 3, y + 5); doc.text(euros(v), R - 3, y + 5, { align: "right" });
+    y += rh; doc.setDrawColor(...LINE); doc.setLineWidth(0.25); doc.line(L, y, R, y);
+  });
+  doc.setDrawColor(...INK); doc.setLineWidth(0.4); doc.line(L, y, R, y);
+  font("bold", 10); doc.text("Total payé", L + 3, y + 5); doc.text(euros(d.total), R - 3, y + 5, { align: "right" });
+  y += rh + 4;
+  font("normal", 9.5); col(MUT);
+  doc.text((payeTxt(d) + " Solde restant dû pour cette période : 0,00 €.").trim(), L, y);
+
+  // Clause
+  y += 8; font("italic", 8); col(MUT);
+  doc.splitTextToSize(CLAUSE, W).forEach(t => { doc.text(t, L, y); y += lh(8) * 1.05; });
+
+  // Lieu, date, signature
+  y += 6; font("normal", 10); col(INK);
+  doc.text(`Fait à ${bail.villeEmission}, le ${fmtDate(d.emission)}`, L, y);
+  doc.text("Signature du bailleur", R, y, { align: "right" });
+  if (signature) {
+    try {
+      const p = doc.getImageProperties(signature), ratio = p.width / p.height;
+      let h = 22, w = h * ratio;
+      if (w > 75) { w = 75; h = w / ratio; }
+      doc.addImage(signature, "PNG", R - w, y + 2, w, h);
+    } catch (e) {}
+  }
+
+  // Avis d'échéance
+  if (d.avis) {
+    const bh = 44, by = 297 - 16 - 8 - bh;
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.roundedRect(L, by, W, bh, 1.2, 1.2, "S");
+    let ay = by + 7; font("bold", 10); col(ACC);
+    doc.text(`AVIS D'ÉCHÉANCE · ${cap(d.moisSuivNom)} (du ${fmtDate(d.nDeb)} au ${fmtDate(d.nFin)})`, L + 4, ay);
+    font("normal", 9.5); col(INK);
+    d.lignes.forEach(([k, v]) => {
+      ay += 6; doc.text(k, L + 4, ay); doc.text(euros(v), R - 4, ay, { align: "right" });
+    });
+    ay += 3; doc.setDrawColor(...LINE); doc.setLineWidth(0.25); doc.line(L + 4, ay, R - 4, ay);
+    ay += 5; font("bold", 9.5); doc.text("Total à payer", L + 4, ay); doc.text(euros(d.total), R - 4, ay, { align: "right" });
+    ay += 7; font("italic", 8); col(MUT); doc.text("Cet avis ne peut en aucun cas servir de quittance de loyer ou de reçu.", L + 4, ay);
+  }
+
+  // Pied de page
+  font("normal", 7.5); col(MUT);
+  doc.text("Quittance établie en application de l'article 21 de la loi n° 89-462 du 6 juillet 1989.", 105, 297 - 12, { align: "center" });
+
+}
+
+function buildPdf(){
+  const d = data();
+  const doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4" });
+  drawQuittance(doc, d);
+  doc.setProperties({ title: `Quittance de loyer – ${cap(d.moisNom)}`, author: bail.bailleurNom });
+  return { buffer: doc.output("arraybuffer"), blob: doc.output("blob"), name: fileName(d) };
+}
+
+/* ---------- image : même dessin, sur un canvas A4 ---------- */
+function loadImg(src){ return new Promise((ok, ko) => { const im = new Image(); im.onload = () => ok(im); im.onerror = ko; im.src = src; }); }
+async function buildImage(){
+  const d = data(), K = 6;                       // 6 px par mm, environ 150 dpi
+  const c = document.createElement("canvas"); c.width = 210 * K; c.height = 297 * K;
+  const g = c.getContext("2d");
+  g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+  const imgs = {};
+  if (signature) { try { imgs[signature] = await loadImg(signature); } catch (e) {} }
+  let fs = 10, st = "normal", txt = "#000", draw = "#000", fill = "#fff", lw = 0.2;
+  const rgb = (r, gg, b) => `rgb(${r},${gg},${b})`;
+  const font = () => { g.font = `${st.includes("italic") ? "italic " : ""}${st.includes("bold") ? 700 : 400} ${fs * 0.3528 * K}px Helvetica, Arial, sans-serif`; };
+  const ls = v => { if ("letterSpacing" in g) g.letterSpacing = v + "px"; };
+  const api = {
+    setFont(_f, s2){ st = s2 || "normal"; font(); },
+    setFontSize(n){ fs = n; font(); },
+    setTextColor(r, gg, b){ txt = rgb(r, gg, b); },
+    setDrawColor(r, gg, b){ draw = rgb(r, gg, b); },
+    setFillColor(r, gg, b){ fill = rgb(r, gg, b); },
+    setLineWidth(w){ lw = w; },
+    text(str, x, y, o = {}){
+      g.fillStyle = txt; g.textBaseline = "alphabetic";
+      g.textAlign = o.align === "right" ? "right" : o.align === "center" ? "center" : "left";
+      if (o.charSpace) ls(o.charSpace * K);
+      g.fillText(str, x * K, y * K); ls(0);
+    },
+    line(x1, y1, x2, y2){ g.strokeStyle = draw; g.lineWidth = lw * K; g.beginPath(); g.moveTo(x1 * K, y1 * K); g.lineTo(x2 * K, y2 * K); g.stroke(); },
+    rect(x, y, w, h, m){ if (m === "F") { g.fillStyle = fill; g.fillRect(x * K, y * K, w * K, h * K); } else { g.strokeStyle = draw; g.lineWidth = lw * K; g.strokeRect(x * K, y * K, w * K, h * K); } },
+    roundedRect(x, y, w, h, rx, _ry, m){
+      g.beginPath(); if (g.roundRect) g.roundRect(x * K, y * K, w * K, h * K, rx * K); else g.rect(x * K, y * K, w * K, h * K);
+      if (m === "F") { g.fillStyle = fill; g.fill(); } else { g.strokeStyle = draw; g.lineWidth = lw * K; g.stroke(); }
+    },
+    splitTextToSize(t, maxW){
+      const out = [];
+      String(t).split("\n").forEach(par => {
+        let line = "";
+        par.split(" ").forEach(word => {
+          const test = line ? line + " " + word : word;
+          if (line && g.measureText(test).width / K > maxW) { out.push(line); line = word; } else line = test;
+        });
+        out.push(line);
+      });
+      return out;
+    },
+    getImageProperties(src){ const im = imgs[src]; if (!im) throw new Error("image"); return { width: im.naturalWidth, height: im.naturalHeight }; },
+    addImage(src, _t, x, y, w, h){ const im = imgs[src]; if (im) g.drawImage(im, x * K, y * K, w * K, h * K); }
+  };
+  font();
+  drawQuittance(api, d);
+  const blob = await new Promise(ok => c.toBlob(ok, "image/png"));
+  return { blob, url: URL.createObjectURL(blob), name: fileName(d).replace(/\.pdf$/, ".png") };
+}
+
+/* ---------- téléchargement ---------- */
+const inClaude = !!(window.claude && typeof window.claude.use === "function");
+let downloads;               // undefined = pas encore prêt, null = indisponible
+const dlReady = inClaude ? window.claude.use("downloads").catch(() => null) : Promise.resolve(null);
+dlReady.then(d => { downloads = d; if (inClaude && !d) $("dl").textContent = "Créer la quittance à envoyer"; });
+const status = (t, kind) => { const el = $("status"); el.textContent = t; el.className = "status" + (kind ? " " + kind : ""); };
+
+async function whyUnavailable(){
+  try {
+    const perm = await window.claude.use("permissions");
+    const st = perm ? await perm.state("downloads") : "unavailable";
+    if (st === "denied") return "Le téléchargement a été refusé pour cette page. Le réautoriser dans le menu Autorisations de la page, puis recharger.";
+    return `Le téléchargement n'est pas disponible dans cette vue (état : ${st}). Mettre à jour l'app Claude, ou ouvrir le lien dans Safari ou Chrome en étant connecté à claude.ai.`;
+  } catch (e) {
+    return "Le téléchargement n'est pas disponible dans cette vue. Mettre à jour l'app Claude, ou ouvrir le lien dans Safari ou Chrome en étant connecté à claude.ai.";
+  }
+}
+
+async function saveOutsideClaude(blob, name){
+  const file = new File([blob], name, { type: "application/pdf" });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    await navigator.share({ files: [file], title: name });
+    return "Quittance partagée.";
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  return "Quittance enregistrée : " + name;
+}
+
+let lastImg = null;
+async function showImage(){
+  if (lastImg) URL.revokeObjectURL(lastImg.url);
+  lastImg = await buildImage();
+  $("imgOut").src = lastImg.url;
+  $("imgStatus").textContent = ""; $("imgStatus").className = "status";
+  $("imgView").hidden = false; $("imgView").scrollTop = 0;
+  document.documentElement.style.overflow = "hidden";
+  $("imgClose").focus();
+}
+$("imgClose").addEventListener("click", () => { $("imgView").hidden = true; document.documentElement.style.overflow = ""; $("dl").focus(); });
+$("imgCopy").addEventListener("click", async () => {
+  const st = $("imgStatus");
+  try {
+    if (!lastImg || !window.ClipboardItem || !navigator.clipboard || !navigator.clipboard.write) throw new Error("x");
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": lastImg.blob })]);
+    st.textContent = "Image copiée. Dans WhatsApp, ouvrir la conversation, appuyer dans le champ de message puis « Coller »."; st.className = "status ok";
+  } catch (e) {
+    st.textContent = "La copie n'est pas possible ici. Appuyer longuement sur l'image à la place."; st.className = "status err";
+  }
+});
+
+$("dl").addEventListener("click", async () => {
+  const btn = $("dl");
+  if (btn.dataset.busy) return;
+  if (!window.jspdf) { status("Le générateur de PDF ne s'est pas chargé. Vérifier la connexion internet puis recharger la page.", "err"); return; }
+  btn.dataset.busy = "1"; btn.disabled = true; status("Préparation du PDF…");
+  try {
+    const { buffer, blob, name } = buildPdf();
+    if (!inClaude) { status(await saveOutsideClaude(blob, name), "ok"); return; }
+    const dl = downloads !== undefined ? downloads : await dlReady;
+    if (!dl) { await showImage(); status(""); return; }
+    status("Confirmer l'enregistrement dans la fenêtre qui s'ouvre…");
+    const r = await dl.save({ filename: name, data: buffer });
+    status(r && r.status === "delivered" ? "Quittance transmise." : "Quittance prête : " + name, "ok");
+  } catch (e) {
+    const c = (e && e.code) || (e && e.name) || "inconnue";
+    status(c === "declined" || c === "AbortError" ? "Téléchargement annulé." :
+           c === "rate_limited" ? "Une fenêtre de téléchargement est déjà ouverte. Réessayer dans un instant." :
+           `Le PDF n'a pas pu être enregistré (erreur : ${c}). Réessayer, ou recharger la page.`, c === "declined" || c === "AbortError" ? "" : "err");
+  } finally { delete btn.dataset.busy; btn.disabled = false; }
+});
+
+/* ---------- contrôles mois ---------- */
+for (let i = 1; i <= 12; i++) $("nbMois").add(new Option(i === 1 ? "1 mois" : i === 3 ? "3 mois (trimestre)" : i + " mois", i));
+$("nbMois").addEventListener("change", () => { status(""); render(); });
+function fillPeriodes(){
+  const sElt = $("periode"); sElt.innerHTML = "";
+  for (let k = -24; k <= 12; k++) {
+    const dt = new Date(sel.y, sel.m + k, 1);
+    sElt.add(new Option(cap(MOIS[dt.getMonth()]) + " " + dt.getFullYear(), dt.getFullYear() + "-" + dt.getMonth()));
+  }
+  sElt.value = sel.y + "-" + sel.m;
+}
+function setMonth(m, y){
+  const dt = new Date(y, m, 1); sel = { m: dt.getMonth(), y: dt.getFullYear() };
+  const key = sel.y + "-" + sel.m;
+  if (![...$("periode").options].some(o => o.value === key)) fillPeriodes(); else $("periode").value = key;
+  $("datePaiement").value = isoDate(new Date(sel.y, sel.m, 1));
+  status(""); render();
+}
+$("periode").addEventListener("change", () => { const [y, m] = $("periode").value.split("-").map(Number); setMonth(m, y); });
+$("prev").addEventListener("click", () => setMonth(sel.m - 1, sel.y));
+$("next").addEventListener("click", () => setMonth(sel.m + 1, sel.y));
+["datePaiement", "mode", "dateEmission", "avis"].forEach(id => $(id).addEventListener("change", render));
+$("dateEmission").value = isoDate(today);
+fillPeriodes();
+
+/* ---------- informations du bail ---------- */
+const FIELDS = [
+  ["f_bNom", "bailleurNom", "s"], ["f_bAdr", "bailleurAdresse", "a"], ["f_loc", "locataires", "a"],
+  ["f_logDesc", "logementDescription", "s"], ["f_logAdr", "logementAdresse", "a"],
+  ["f_loyer", "loyer", "n"], ["f_charges", "charges", "n"], ["f_ville", "villeEmission", "s"], ["f_ref", "prefixeRef", "s"]
+];
+function fillFields(){ FIELDS.forEach(([id, k, t]) => { $(id).value = t === "a" ? bail[k].join("\n") : bail[k]; }); }
+FIELDS.forEach(([id, k, t]) => $(id).addEventListener("input", () => {
+  const v = $(id).value;
+  bail[k] = t === "a" ? v.split("\n").map(s => s.trim()).filter(Boolean) : t === "n" ? (parseFloat(v.replace(",", ".")) || 0) : v;
+  const diff = {}; Object.keys(CONFIG).forEach(key => { if (JSON.stringify(bail[key]) !== JSON.stringify(CONFIG[key])) diff[key] = bail[key]; });
+  store(KEY_BAIL, Object.keys(diff).length ? JSON.stringify(diff) : null);
+  render();
+}));
+$("reset").addEventListener("click", () => { bail = Object.assign({}, CONFIG); store(KEY_BAIL, null); fillFields(); render(); });
+
+/* ---------- lien personnel ---------- */
+function personalLink(){ return location.origin + location.pathname + "#d=" + b64enc(JSON.stringify(bail)); }
+if (!inClaude) {
+  $("linkBox").hidden = false;
+  const refresh = () => { $("linkOut").value = personalLink(); };
+  FIELDS.forEach(([id]) => $(id).addEventListener("input", refresh));
+  $("reset").addEventListener("click", refresh);
+  refresh();
+  $("linkCopy").addEventListener("click", async () => {
+    refresh();
+    try { await navigator.clipboard.writeText($("linkOut").value); $("linkCopy").textContent = "Lien copié"; }
+    catch (e) { $("linkOut").focus(); $("linkOut").select(); }
+  });
+  if (!bail.bailleurNom) { $("bail").open = true; status("Remplir d'abord les informations du bail (en bas), ou ouvrir le lien personnel.", "err"); }
+}
+
+/* ---------- signature ---------- */
+const pad_ = $("sigPad"), ctx = pad_.getContext("2d");
+let drawing = false, drawn = false, last = null;
+function sizePad(){
+  const r = pad_.getBoundingClientRect(); if (!r.width) return;
+  const dpr = window.devicePixelRatio || 1;
+  pad_.width = Math.round(r.width * dpr); pad_.height = Math.round(r.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = "#1b1e3a";
+  drawn = false;
+}
+const pt = e => { const r = pad_.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+pad_.addEventListener("pointerdown", e => { drawing = true; last = pt(e); try { pad_.setPointerCapture(e.pointerId); } catch (_) {} });
+pad_.addEventListener("pointermove", e => { if (!drawing) return; const p = pt(e); ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p; drawn = true; });
+["pointerup", "pointercancel", "pointerleave"].forEach(ev => pad_.addEventListener(ev, () => { drawing = false; }));
+$("sigClear").addEventListener("click", sizePad);
+$("sigSave").addEventListener("click", () => {
+  if (!drawn) { status("Signer d'abord dans le cadre."); return; }
+  // recadre la signature sur la zone dessinée
+  const w = pad_.width, h = pad_.height, px = ctx.getImageData(0, 0, w, h).data;
+  let x0 = w, y0 = h, x1 = 0, y1 = 0;
+  for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) if (px[(yy * w + xx) * 4 + 3] > 0) { if (xx < x0) x0 = xx; if (xx > x1) x1 = xx; if (yy < y0) y0 = yy; if (yy > y1) y1 = yy; }
+  const m = 6, cw = Math.max(1, x1 - x0 + 2*m), ch = Math.max(1, y1 - y0 + 2*m);
+  const c = document.createElement("canvas"); c.width = cw; c.height = ch;
+  c.getContext("2d").drawImage(pad_, x0 - m, y0 - m, cw, ch, 0, 0, cw, ch);
+  signature = c.toDataURL("image/png"); store(KEY_SIG, signature); showSig(); render();
+});
+$("sigRemove").addEventListener("click", () => { signature = null; store(KEY_SIG, null); showSig(); render(); });
+function showSig(){ $("sigView").hidden = !signature; $("sigEdit").hidden = !!signature; if (signature) $("sigImg").src = signature; else requestAnimationFrame(sizePad); }
+window.addEventListener("resize", () => { if (!signature && !drawn) sizePad(); });
+
+/* ---------- démarrage ---------- */
+fillFields();
+showSig();
+setMonth(sel.m, sel.y);
+</script>
+</body></html>
